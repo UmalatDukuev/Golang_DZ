@@ -5,26 +5,33 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strconv"
 )
 
 func CollapseLines(scanner *bufio.Scanner, writer *bufio.Writer) {
 	prevLine := ""
+	// if scanner.Scan() {
+	// 	prevLine = scanner.Text() // первая строчка файла
+	// 	//	fmt.Println(prevLine)
+	// }
 	cnt := 1
 	for scanner.Scan() {
+		prevLine = scanner.Text()
 		line := scanner.Text()
 		//fmt.Println(line, prevLine)
+		if line == prevLine {
+			cnt += 1
+		}
 		if line != prevLine {
 			//writer.WriteString(string(cnt))
-			//fmt.Println(cnt - 1)
-
-			writer.WriteString(scanner.Text() + "\n")
+			fmt.Println(cnt)
+			writer.WriteString(strconv.Itoa(cnt) + " " + scanner.Text() + "\n")
 			cnt = 1
 		}
 
 		prevLine = line
-		cnt += 1
 	}
-	fmt.Println(cnt - 1)
+	fmt.Println(cnt)
 	writer.Flush()
 }
 
