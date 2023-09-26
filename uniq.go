@@ -5,11 +5,10 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"strconv"
 )
 
 func CollapseLines(scanner *bufio.Scanner, writer *bufio.Writer) {
-	writer.WriteString("\n")
+	//writer.WriteString("\n")
 	prevLine := ""
 	if scanner.Scan() {
 		prevLine = scanner.Text()
@@ -20,12 +19,12 @@ func CollapseLines(scanner *bufio.Scanner, writer *bufio.Writer) {
 		if line == prevLine {
 			cnt++
 		} else {
-			writer.WriteString(strconv.Itoa(cnt) + " " + prevLine + "\n")
+			writer.WriteString(prevLine + "\n")
 			cnt = 1
 		}
 		prevLine = line
 	}
-	writer.WriteString(strconv.Itoa(cnt) + " " + prevLine + "\n")
+	writer.WriteString(prevLine)
 	writer.Flush()
 }
 
