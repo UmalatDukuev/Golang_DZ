@@ -9,29 +9,23 @@ import (
 )
 
 func CollapseLines(scanner *bufio.Scanner, writer *bufio.Writer) {
+	writer.WriteString("\n")
 	prevLine := ""
-	// if scanner.Scan() {
-	// 	prevLine = scanner.Text() // первая строчка файла
-	// 	//	fmt.Println(prevLine)
-	// }
+	if scanner.Scan() {
+		prevLine = scanner.Text()
+	}
 	cnt := 1
 	for scanner.Scan() {
-		prevLine = scanner.Text()
 		line := scanner.Text()
-		//fmt.Println(line, prevLine)
 		if line == prevLine {
-			cnt += 1
-		}
-		if line != prevLine {
-			//writer.WriteString(string(cnt))
-			fmt.Println(cnt)
-			writer.WriteString(strconv.Itoa(cnt) + " " + scanner.Text() + "\n")
+			cnt++
+		} else {
+			writer.WriteString(strconv.Itoa(cnt) + " " + prevLine + "\n")
 			cnt = 1
 		}
-
 		prevLine = line
 	}
-	fmt.Println(cnt)
+	writer.WriteString(strconv.Itoa(cnt) + " " + prevLine + "\n")
 	writer.Flush()
 }
 
