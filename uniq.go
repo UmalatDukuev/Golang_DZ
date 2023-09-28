@@ -7,9 +7,17 @@ import (
 	"os"
 )
 
-func CollapseLines(scanner *bufio.Scanner, writer *bufio.Writer) {
-	//writer.WriteString("\n")
-	prevLine := ""
+type Options struct {
+	c bool
+	d bool
+	u bool
+	f int
+	s int
+	i bool
+}
+
+func CollapseLines(scanner *bufio.Scanner, writer *bufio.Writer, opts Options) {
+	/*prevLine := ""
 	if scanner.Scan() {
 		prevLine = scanner.Text()
 	}
@@ -19,28 +27,29 @@ func CollapseLines(scanner *bufio.Scanner, writer *bufio.Writer) {
 		if line == prevLine {
 			cnt++
 		} else {
+
 			writer.WriteString(prevLine + "\n")
 			cnt = 1
 		}
 		prevLine = line
 	}
 	writer.WriteString(prevLine)
-	writer.Flush()
+	writer.Flush()*/
 }
 
-func ParseFlags() {
-	c := flag.Bool("c", false, "flag 1")
-	d := flag.Bool("d", false, "flag 2")
-	u := flag.Bool("u", false, "flag 3")
-	f := flag.Bool("f", false, "flag 4")
-	s := flag.Bool("s", false, "flag 5")
-	i := flag.Bool("i", false, "flag 6")
-	_, _, _, _, _, _ = c, d, u, f, s, i
-
+func ParseFlags(opts Options) Options {
+	flag.BoolVar(&opts.c, "c", false, "flag 1")
+	flag.BoolVar(&opts.d, "d", false, "flag 2")
+	flag.BoolVar(&opts.u, "u", false, "flag 3")
+	flag.IntVar(&opts.f, "f", 5, "flag 4")
+	flag.IntVar(&opts.s, "s", 0, "flag 5")
+	flag.BoolVar(&opts.i, "i", false, "flag 6")
+	//	_, _, _, _, _, _ = c, d, u, f, s, i
 	flag.Parse()
+	return opts
 }
 
-func CheckInput() {
+func CheckInput(opts Options) {
 	if len(flag.Args()) > 2 {
 		fmt.Println("Maximum number of arguments = 2! ")
 		return
@@ -68,12 +77,14 @@ func CheckInput() {
 
 	scanner := bufio.NewScanner(input)
 	writer := bufio.NewWriter(output)
-	CollapseLines(scanner, writer)
+	CollapseLines(scanner, writer, opts)
 
 }
 
 func main() {
-	ParseFlags()
-	CheckInput()
+	var opts Options
+	opts = ParseFlags(opts)
+	CheckInput(opts)
+
 	return
 }
