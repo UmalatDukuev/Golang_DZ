@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strconv"
 )
 
 type Options struct {
@@ -17,34 +18,41 @@ type Options struct {
 }
 
 func CollapseLines(scanner *bufio.Scanner, writer *bufio.Writer, opts Options) {
-	/*prevLine := ""
-	if scanner.Scan() {
-		prevLine = scanner.Text()
+	lines := make([]string, 0)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
 	}
 	cnt := 1
-	for scanner.Scan() {
-		line := scanner.Text()
+	prevLine := lines[0]
+	for i := 1; i < len(lines); i++ {
+		line := lines[i]
 		if line == prevLine {
 			cnt++
 		} else {
-
-			writer.WriteString(prevLine + "\n")
+			if opts.c == true {
+				writer.WriteString(strconv.Itoa(cnt) + " " + prevLine + "\n")
+			} else {
+				writer.WriteString(prevLine + "\n")
+			}
 			cnt = 1
 		}
 		prevLine = line
 	}
-	writer.WriteString(prevLine)
-	writer.Flush()*/
+	if opts.c == true {
+		writer.WriteString(strconv.Itoa(cnt) + " " + prevLine + "\n")
+	} else {
+		writer.WriteString(prevLine + "\n")
+	}
+	writer.Flush()
 }
 
 func ParseFlags(opts Options) Options {
-	flag.BoolVar(&opts.c, "c", false, "flag 1")
-	flag.BoolVar(&opts.d, "d", false, "flag 2")
-	flag.BoolVar(&opts.u, "u", false, "flag 3")
+	flag.BoolVar(&opts.c, "c", false, "add number of lines")
+	flag.BoolVar(&opts.d, "d", false, "stdout repeating lines")
+	flag.BoolVar(&opts.u, "u", false, "stdout uniq lines")
 	flag.IntVar(&opts.f, "f", 5, "flag 4")
 	flag.IntVar(&opts.s, "s", 0, "flag 5")
 	flag.BoolVar(&opts.i, "i", false, "flag 6")
-	//	_, _, _, _, _, _ = c, d, u, f, s, i
 	flag.Parse()
 	return opts
 }
