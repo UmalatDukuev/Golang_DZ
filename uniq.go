@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"strconv"
 )
@@ -20,7 +21,12 @@ type Options struct {
 func CollapseLines(scanner *bufio.Scanner, writer *bufio.Writer, opts Options) {
 	lines := make([]string, 0)
 	for scanner.Scan() {
+
+		if scanner.Err() == io.EOF {
+			break
+		}
 		lines = append(lines, scanner.Text())
+
 	}
 	cnt := 1
 	prevLine := lines[0]
@@ -32,7 +38,13 @@ func CollapseLines(scanner *bufio.Scanner, writer *bufio.Writer, opts Options) {
 			if opts.c == true {
 				writer.WriteString(strconv.Itoa(cnt) + " " + prevLine + "\n")
 			} else {
-				writer.WriteString(prevLine + "\n")
+				if opts.d == true {
+					if cnt > 1 {
+						writer.WriteString(prevLine + "\n")
+					}
+				} else {
+					writer.WriteString(prevLine + "\n")
+				}
 			}
 			cnt = 1
 		}
@@ -41,7 +53,13 @@ func CollapseLines(scanner *bufio.Scanner, writer *bufio.Writer, opts Options) {
 	if opts.c == true {
 		writer.WriteString(strconv.Itoa(cnt) + " " + prevLine + "\n")
 	} else {
-		writer.WriteString(prevLine + "\n")
+		if opts.d == true {
+			if cnt > 1 {
+				writer.WriteString(prevLine + "\n")
+			}
+		} else {
+			writer.WriteString(prevLine + "\n")
+		}
 	}
 	writer.Flush()
 }
@@ -107,6 +125,5 @@ func main() {
 	var opts Options
 	opts = ParseFlags(opts)
 	CheckInput(opts)
-
 	return
 }
