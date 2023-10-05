@@ -50,14 +50,28 @@ func ParseFlags(opts Options) Options {
 	flag.BoolVar(&opts.c, "c", false, "add number of lines")
 	flag.BoolVar(&opts.d, "d", false, "stdout repeating lines")
 	flag.BoolVar(&opts.u, "u", false, "stdout uniq lines")
-	flag.IntVar(&opts.f, "f", 5, "flag 4")
-	flag.IntVar(&opts.s, "s", 0, "flag 5")
-	flag.BoolVar(&opts.i, "i", false, "flag 6")
+	flag.IntVar(&opts.f, "f", 5, "don't consider first num fields")
+	flag.IntVar(&opts.s, "s", 0, "don't consider first num symbols")
+	flag.BoolVar(&opts.i, "i", false, "")
 	flag.Parse()
 	return opts
 }
 
 func CheckInput(opts Options) {
+	cnt := 0
+	if opts.c == true {
+		cnt++
+	}
+	if opts.d == true {
+		cnt++
+	}
+	if opts.u == true {
+		cnt++
+	}
+	if cnt > 1 {
+		fmt.Println("You can use only one of c/d/u arguments")
+		return
+	}
 	if len(flag.Args()) > 2 {
 		fmt.Println("Maximum number of arguments = 2! ")
 		return
