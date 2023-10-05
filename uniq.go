@@ -43,8 +43,15 @@ func CollapseLines(scanner *bufio.Scanner, writer *bufio.Writer, opts Options) {
 						writer.WriteString(prevLine + "\n")
 					}
 				} else {
-					writer.WriteString(prevLine + "\n")
+					if opts.u == true {
+						if cnt == 1 {
+							writer.WriteString(prevLine + "\n")
+						}
+					} else {
+						writer.WriteString(prevLine + "\n")
+					}
 				}
+
 			}
 			cnt = 1
 		}
@@ -58,7 +65,13 @@ func CollapseLines(scanner *bufio.Scanner, writer *bufio.Writer, opts Options) {
 				writer.WriteString(prevLine + "\n")
 			}
 		} else {
-			writer.WriteString(prevLine + "\n")
+			if opts.u == true {
+				if cnt == 1 {
+					writer.WriteString(prevLine + "\n")
+				}
+			} else {
+				writer.WriteString(prevLine + "\n")
+			}
 		}
 	}
 	writer.Flush()
