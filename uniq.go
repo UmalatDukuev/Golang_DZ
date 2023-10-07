@@ -145,7 +145,6 @@ func CheckInput(opts Options) {
 	input := os.Stdin
 	output := os.Stdout
 	var err error
-	fmt.Println(err)
 	if flag.Arg(0) != "" {
 		input, err = os.Open(flag.Arg(0))
 		if err != nil {
@@ -154,8 +153,6 @@ func CheckInput(opts Options) {
 		}
 		defer input.Close()
 	}
-	fmt.Println(err)
-
 	if flag.Arg(1) != "" {
 		output, err = os.Create(flag.Arg(1))
 		if err != nil {
@@ -164,8 +161,6 @@ func CheckInput(opts Options) {
 		}
 		defer output.Close()
 	}
-	fmt.Println(err)
-
 	scanner := bufio.NewScanner(input)
 	writer := bufio.NewWriter(output)
 	CollapseLines(scanner, writer, opts)
