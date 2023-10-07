@@ -144,24 +144,27 @@ func CheckInput(opts Options) {
 	}
 	input := os.Stdin
 	output := os.Stdout
-
+	var err error
+	fmt.Println(err)
 	if flag.Arg(0) != "" {
-		input, _ = os.Open(flag.Arg(0))
-		// if err != nil {
-		// 	fmt.Println("Error opening file:", err)
-		// 	return
-		// }
+		input, err = os.Open(flag.Arg(0))
+		if err != nil {
+			fmt.Println("Error opening file:", err)
+			return
+		}
 		defer input.Close()
 	}
+	fmt.Println(err)
 
 	if flag.Arg(1) != "" {
-		output, _ = os.Create(flag.Arg(1))
-		// if err != nil {
-		// 	fmt.Println("Error finding output file:", err)
-		// 	return
-		// }
+		output, err = os.Create(flag.Arg(1))
+		if err != nil {
+			fmt.Println("Error finding output file:", err)
+			return
+		}
 		defer output.Close()
 	}
+	fmt.Println(err)
 
 	scanner := bufio.NewScanner(input)
 	writer := bufio.NewWriter(output)
