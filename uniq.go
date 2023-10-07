@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -48,58 +49,52 @@ func CollapseLines(scanner *bufio.Scanner, writer *bufio.Writer, opts Options) {
 
 		}
 	}
-
-	for i := 0; i < len(lines); i++ {
-		writer.WriteString(lines[i] + "\n")
-	}
-	/*
-		cnt := 1
-		prevLine := lines[0]
-		for i := 1; i < len(lines); i++ {
-			line := lines[i]
-			if line == prevLine {
-				cnt++
-			} else {
-				if opts.c == true {
-					writer.WriteString(strconv.Itoa(cnt) + " " + prevLine + "\n")
-				} else {
-					if opts.d == true {
-						if cnt > 1 {
-							writer.WriteString(prevLine + "\n")
-						}
-					} else {
-						if opts.u == true {
-							if cnt == 1 {
-								writer.WriteString(prevLine + "\n")
-							}
-						} else {
-							writer.WriteString(prevLine + "\n")
-						}
-					}
-
-				}
-				cnt = 1
-			}
-			prevLine = line
-		}
-		if opts.c == true {
-			writer.WriteString(strconv.Itoa(cnt) + " " + prevLine + "\n")
+	cnt := 1
+	prevLine := lines[0]
+	for i := 1; i < len(lines); i++ {
+		line := lines[i]
+		if line == prevLine {
+			cnt++
 		} else {
-			if opts.d == true {
-				if cnt > 1 {
-					writer.WriteString(prevLine + "\n")
-				}
+			if opts.c == true {
+				writer.WriteString(strconv.Itoa(cnt) + " " + prevLine + "\n")
 			} else {
-				if opts.u == true {
-					if cnt == 1 {
+				if opts.d == true {
+					if cnt > 1 {
 						writer.WriteString(prevLine + "\n")
 					}
 				} else {
+					if opts.u == true {
+						if cnt == 1 {
+							writer.WriteString(prevLine + "\n")
+						}
+					} else {
+						writer.WriteString(prevLine + "\n")
+					}
+				}
+
+			}
+			cnt = 1
+		}
+		prevLine = line
+	}
+	if opts.c == true {
+		writer.WriteString(strconv.Itoa(cnt) + " " + prevLine + "\n")
+	} else {
+		if opts.d == true {
+			if cnt > 1 {
+				writer.WriteString(prevLine + "\n")
+			}
+		} else {
+			if opts.u == true {
+				if cnt == 1 {
 					writer.WriteString(prevLine + "\n")
 				}
+			} else {
+				writer.WriteString(prevLine + "\n")
 			}
 		}
-	*/
+	}
 	writer.Flush()
 }
 
