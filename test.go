@@ -2,16 +2,33 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
-func main() {
-	str := "one two three four"
-	n := 2
+func isEqual(str1 string, str2 string, opts bool) bool {
 
-	if len(str) > n {
-		result := str[n:]
-		fmt.Println(result)
+	if opts == false {
+		fmt.Println("2   ")
+		fmt.Println(str1 == str2)
+		return str1 == str1
 	} else {
-		fmt.Println("Недостаточно символов для вывода")
+
+		fmt.Println("1   ")
+		fmt.Println(strings.EqualFold(str1, str2))
+		return strings.EqualFold(str1, str2)
 	}
+}
+
+func main() {
+	str1 := "aaa"
+	str2 := "AAA"
+	i := false
+	// fmt.Println(str1 == str2)
+	// fmt.Println(strings.EqualFold(str1, str2))
+	fmt.Println(isEqual(str1, str2, i))
+	// if isEqual(str1, str2, i) == true {
+	// 	fmt.Println(1)
+	// } else {
+	// 	fmt.Println(2)
+	// }
 }

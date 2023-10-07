@@ -18,10 +18,24 @@ type Options struct {
 	i bool
 }
 
+func isEqual(str1 string, str2 string, opts Options) bool {
+	if opts.i == true {
+		return strings.EqualFold(str1, str2)
+	} else {
+		return str1 == str2
+	}
+}
+
 func CollapseLines(scanner *bufio.Scanner, writer *bufio.Writer, opts Options) {
 	lines := make([]string, 0)
 	for scanner.Scan() {
 		lines = append(lines, scanner.Text())
+	}
+
+	if opts.i == true {
+		for i := 0; i < len(lines); i++ {
+			lines[i] = strings.ToLower(lines[i])
+		}
 	}
 	for i := 0; i < len(lines); i++ {
 		if opts.f != 0 {
@@ -53,7 +67,7 @@ func CollapseLines(scanner *bufio.Scanner, writer *bufio.Writer, opts Options) {
 	prevLine := lines[0]
 	for i := 1; i < len(lines); i++ {
 		line := lines[i]
-		if line == prevLine {
+		if isEqual(line, prevLine, opts) == true {
 			cnt++
 		} else {
 			if opts.c == true {
