@@ -1,6 +1,5 @@
-aaa
-AAA
-AAA
-111
-bbb
-BBB
+apple
+banana
+banana
+orange
+apple
