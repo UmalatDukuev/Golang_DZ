@@ -7,8 +7,6 @@ import (
 	"os"
 	"strconv"
 	"strings"
-
-	"uniq.go"
 )
 
 type Options struct {
@@ -170,10 +168,8 @@ func CheckInput(opts Options) {
 }
 
 func main() {
-	/*var opts Options
+	var opts Options
 	opts = ParseFlags(opts)
-	CheckInput(opts)*/
-	var op uniq.Opt
-	fmt.Println(op)
+	CheckInput(opts)
 	return
 }
