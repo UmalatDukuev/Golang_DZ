@@ -42,14 +42,6 @@ func CheckInput() ([]string, *bufio.Writer) {
 	return lines, writer
 }
 
-func extract(scanner *bufio.Scanner) []string {
-	lines := make([]string, 0)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-	return lines
-}
-
 func main() {
 	var opts uniq.Options
 	opts = uniq.ParseFlags(opts)
