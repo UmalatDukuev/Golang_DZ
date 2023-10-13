@@ -55,13 +55,9 @@ func CheckFlags(opts Options) {
 	}
 }
 
-func CollapseLines(scanner *bufio.Scanner, writer *bufio.Writer, opts Options) {
-	CheckFlags(opts)
-	lines := make([]string, 0)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
+func CollapseLines(lines []string, writer *bufio.Writer, opts Options) {
 
+	CheckFlags(opts)
 	if opts.i == true {
 		for i := 0; i < len(lines); i++ {
 			lines[i] = strings.ToLower(lines[i])
@@ -75,7 +71,7 @@ func CollapseLines(scanner *bufio.Scanner, writer *bufio.Writer, opts Options) {
 				lines[i] = result
 			} else {
 				fmt.Println("Недостаточно слов в строке для вывода")
-				return
+				os.Exit(0)
 			}
 		}
 	}
@@ -88,7 +84,7 @@ func CollapseLines(scanner *bufio.Scanner, writer *bufio.Writer, opts Options) {
 				lines[i] = result
 			} else {
 				fmt.Println("Недостаточно символов в строке для вывода")
-				return
+				os.Exit(0)
 			}
 
 		}

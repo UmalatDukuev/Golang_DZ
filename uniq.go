@@ -8,11 +8,11 @@ import (
 	"uniq"
 )
 
-func CheckInput(opts uniq.Options) {
+func CheckInput() ([]string, *bufio.Writer) {
 
 	if len(flag.Args()) > 2 {
 		fmt.Println("Maximum number of arguments = 2! ")
-		return
+		os.Exit(0)
 	}
 	input := os.Stdin
 	output := os.Stdout
@@ -21,7 +21,7 @@ func CheckInput(opts uniq.Options) {
 		input, err = os.Open(flag.Arg(0))
 		if err != nil {
 			fmt.Println("Error opening file:", err)
-			return
+			os.Exit(0)
 		}
 		defer input.Close()
 	}
@@ -29,18 +29,30 @@ func CheckInput(opts uniq.Options) {
 		output, err = os.Create(flag.Arg(1))
 		if err != nil {
 			fmt.Println("Error finding output file:", err)
-			return
+			os.Exit(0)
 		}
 		defer output.Close()
 	}
 	scanner := bufio.NewScanner(input)
 	writer := bufio.NewWriter(output)
-	uniq.CollapseLines(scanner, writer, opts)
+	lines := make([]string, 0)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+	return lines, writer
+}
+
+func extract(scanner *bufio.Scanner) []string {
+	lines := make([]string, 0)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+	return lines
 }
 
 func main() {
 	var opts uniq.Options
 	opts = uniq.ParseFlags(opts)
-	CheckInput(opts)
-	return
+	lines, writer := CheckInput()
+	uniq.CollapseLines(lines, writer, opts)
 }
