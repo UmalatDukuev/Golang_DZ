@@ -1,7 +1,6 @@
 package uniq
 
 import (
-	"bufio"
 	"flag"
 	"fmt"
 	"os"
@@ -55,8 +54,8 @@ func CheckFlags(opts Options) {
 	}
 }
 
-func CollapseLines(lines []string, writer *bufio.Writer, opts Options) {
-
+func CollapseLines(lines []string, opts Options) []string {
+	result := make([]string, 0)
 	CheckFlags(opts)
 	if opts.i == true {
 		for i := 0; i < len(lines); i++ {
@@ -89,6 +88,7 @@ func CollapseLines(lines []string, writer *bufio.Writer, opts Options) {
 
 		}
 	}
+
 	cnt := 1
 	prevLine := lines[0]
 	for i := 1; i < len(lines); i++ {
@@ -97,19 +97,23 @@ func CollapseLines(lines []string, writer *bufio.Writer, opts Options) {
 			cnt++
 		} else {
 			if opts.c == true {
-				writer.WriteString(strconv.Itoa(cnt) + " " + prevLine + "\n")
+				result = append(result, strconv.Itoa(cnt)+" "+prevLine+"\n")
+				//writer.WriteString(strconv.Itoa(cnt) + " " + prevLine + "\n")
 			} else {
 				if opts.d == true {
 					if cnt > 1 {
-						writer.WriteString(prevLine + "\n")
+						result = append(result, prevLine+"\n")
+						//writer.WriteString(prevLine + "\n")
 					}
 				} else {
 					if opts.u == true {
 						if cnt == 1 {
-							writer.WriteString(prevLine + "\n")
+							result = append(result, prevLine+"\n")
+							//writer.WriteString(prevLine + "\n")
 						}
 					} else {
-						writer.WriteString(prevLine + "\n")
+						result = append(result, prevLine+"\n")
+						//writer.WriteString(prevLine + "\n")
 					}
 				}
 
@@ -119,23 +123,24 @@ func CollapseLines(lines []string, writer *bufio.Writer, opts Options) {
 		prevLine = line
 	}
 	if opts.c == true {
-		writer.WriteString(strconv.Itoa(cnt) + " " + prevLine + "\n")
+		result = append(result, strconv.Itoa(cnt)+" "+prevLine+"\n")
+		//writer.WriteString(strconv.Itoa(cnt) + " " + prevLine + "\n")
 	} else {
 		if opts.d == true {
 			if cnt > 1 {
-				writer.WriteString(prevLine + "\n")
+				result = append(result, prevLine+"\n")
 			}
 		} else {
 			if opts.u == true {
 				if cnt == 1 {
-					writer.WriteString(prevLine + "\n")
+					result = append(result, prevLine+"\n")
 				}
 			} else {
-				writer.WriteString(prevLine + "\n")
+				result = append(result, prevLine+"\n")
 			}
 		}
 	}
-	writer.Flush()
+	return result
 }
 
 func main() {

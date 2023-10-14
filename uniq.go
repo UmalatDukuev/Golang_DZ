@@ -9,7 +9,6 @@ import (
 )
 
 func CheckInput() ([]string, *bufio.Writer) {
-
 	if len(flag.Args()) > 2 {
 		fmt.Println("Maximum number of arguments = 2! ")
 		os.Exit(0)
@@ -42,9 +41,21 @@ func CheckInput() ([]string, *bufio.Writer) {
 	return lines, writer
 }
 
+func ParseWriter(result []string, writer *bufio.Writer) {
+	var err error
+	for _, val := range result {
+		_, err = writer.WriteString(val)
+		if err != nil {
+			break
+		}
+	}
+}
+
 func main() {
 	var opts uniq.Options
 	opts = uniq.ParseFlags(opts)
 	lines, writer := CheckInput()
-	uniq.CollapseLines(lines, writer, opts)
+	result := uniq.CollapseLines(lines, opts)
+	ParseWriter(result, writer)
+	writer.Flush()
 }
