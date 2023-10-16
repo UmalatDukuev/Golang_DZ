@@ -98,22 +98,18 @@ func CollapseLines(lines []string, opts Options) []string {
 		} else {
 			if opts.c == true {
 				result = append(result, strconv.Itoa(cnt)+" "+prevLine+"\n")
-				//writer.WriteString(strconv.Itoa(cnt) + " " + prevLine + "\n")
 			} else {
 				if opts.d == true {
 					if cnt > 1 {
 						result = append(result, prevLine+"\n")
-						//writer.WriteString(prevLine + "\n")
 					}
 				} else {
 					if opts.u == true {
 						if cnt == 1 {
 							result = append(result, prevLine+"\n")
-							//writer.WriteString(prevLine + "\n")
 						}
 					} else {
 						result = append(result, prevLine+"\n")
-						//writer.WriteString(prevLine + "\n")
 					}
 				}
 
@@ -124,7 +120,6 @@ func CollapseLines(lines []string, opts Options) []string {
 	}
 	if opts.c == true {
 		result = append(result, strconv.Itoa(cnt)+" "+prevLine+"\n")
-		//writer.WriteString(strconv.Itoa(cnt) + " " + prevLine + "\n")
 	} else {
 		if opts.d == true {
 			if cnt > 1 {
@@ -141,8 +136,4 @@ func CollapseLines(lines []string, opts Options) []string {
 		}
 	}
 	return result
-}
-
-func main() {
-
 }
